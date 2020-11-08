@@ -1,0 +1,23 @@
+{
+  "name": "first-api",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/morozzzDima/first-api.git"
+  },
+  "keywords": [
+    "api",
+    "express"
+  ],
+  "author": "Dima Moroz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/morozzzDima/first-api/issues"
+  },
+  "homepage": "https://github.com/morozzzDima/first-api#readme"
+}
