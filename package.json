@@ -23,5 +23,8 @@
   "devDependencies": {
     "eslint": "^7.13.0",
     "eslint-plugin-security": "^1.4.0"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
   }
 }
