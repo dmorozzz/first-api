@@ -19,5 +19,12 @@
   "bugs": {
     "url": "https://github.com/morozzzDima/first-api/issues"
   },
-  "homepage": "https://github.com/morozzzDima/first-api#readme"
+  "homepage": "https://github.com/morozzzDima/first-api#readme",
+  "devDependencies": {
+    "eslint": "^7.13.0",
+    "eslint-plugin-security": "^1.4.0"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
 }
