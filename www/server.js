@@ -1,8 +1,8 @@
 const { createServer } = require('http');
 const app = require('../api/app.js');
+const dataBase = require('../database/mongodb.js');
 
 const server = createServer(app);
-const dataBase = require('../database/mongodb.js');
 
 const port = process.env.PORT || 3000;
 
