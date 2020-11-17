@@ -26,8 +26,7 @@ userSchema.pre('save', async function(next) {
     }
 
     try {
-
-        const salt =  await bcrypt.genSalt(10);
+        const salt =  await bcrypt.genSalt(parseInt(saltRound, 10));
         user.password = await bcrypt.hash(user.password, salt);
         return next();
     } catch (error) {
@@ -35,6 +34,11 @@ userSchema.pre('save', async function(next) {
     }
     
 })
+
+
+userSchema.methods.comparePassword = async function(candidatePassword) {
+    return await  bcrypt.compare(candidatePassword, this.password)
+};
 
 module.exports = mongoose.model('User', userSchema);
 

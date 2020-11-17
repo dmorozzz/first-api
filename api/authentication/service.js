@@ -14,6 +14,17 @@ const createUser = async userData => {
     return await newUser.save();
 }
 
+const findUser = async username => {
+    const user = await UserSchema.findOne({username});
+
+    if(!user) {
+        throw new Error('user not found');
+    }
+
+    return user;
+}
+
 module.exports = {
-    createUser
+    createUser, 
+    findUser
 }
