@@ -12,7 +12,7 @@ const sessionOptions = {
     secret: sessionSecret,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: true,  maxAge: minute}
+    cookie: { maxAge: minute}
 }
 
 app.set('trust proxy', 1);
@@ -20,10 +20,8 @@ app.set('trust proxy', 1);
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session(sessionOptions));
 
-const authentication = require('./authentication/index');
-const user = require('./user/index');
+const { userRouter } = require('./user');
 
-app.use(`${apiUrl}/authentication`, authentication.router);
-app.use(`${apiUrl}/user`, user.router);
+app.use(`${apiUrl}/user`,  userRouter);
 
 module.exports = app;

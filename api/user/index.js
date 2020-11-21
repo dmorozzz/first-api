@@ -1,6 +1,9 @@
-const router = require('./router');
+const userRouter = require('./router');
+const { authenticationUserRouter } = require('./authentication');
 
+userRouter.use('/authentication', authenticationUserRouter);
 
 module.exports = {
-    router
+    userRouter,
+    authenticationUserRouter
 }
