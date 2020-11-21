@@ -16,6 +16,3 @@ dataBase.once('open', startServer);
 dataBase.on('error', error => { 
     throw error;
 });
-
-
-

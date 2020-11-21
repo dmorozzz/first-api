@@ -21,8 +21,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session(sessionOptions));
 
 const authentication = require('./authentication/index');
+const user = require('./user/index');
 
 app.use(`${apiUrl}/authentication`, authentication.router);
-
+app.use(`${apiUrl}/user`, user.router);
 
 module.exports = app;
