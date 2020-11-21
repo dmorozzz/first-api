@@ -1,8 +1,8 @@
 const express = require('express');
 const session = require('express-session');
 const router = express.Router();
-const userService = require('./service.js');
-const {promisify} = require('util');
+const userService = require('../service.js');
+const { promisify } = require('util');
 
 router.post('/registration', async (req, res) => {
     try {
@@ -19,17 +19,16 @@ router.post('/registration', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
-        const {username, password} = req.body;
+        const { username, password } = req.body;
         const user = await userService.findUser(username);
         await user.comparePassword(password);
         req.session.username = username;
         return res.status(200).json({status: 'OK', data: username});
     } catch (error) {
         console.log(error)
-        return res.status(401).json({message: error});
+        return res.status(401).json({ message: error });
     }
 })
-
 
 router.get('/logout', async (req, res) => {
     try {
