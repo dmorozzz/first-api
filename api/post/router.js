@@ -1,19 +1,21 @@
 const express = require('express');
 const router = express.Router();
+
+
 const PostSchema = require('./schema');
 const { findUser } = require('../user/service');
 
-const { authenticationCheck } = require('./midlleware');
+const { authenticationCheck, getFormData } = require('./midlleware');
 const { getPostById, deleteOnePost, getPosts } = require('./service');
 
 
-router.post('/',  authenticationCheck, async (req, res) => {
+router.post('/', getFormData, async (req, res) => {
     try {
-        const postData = req.body;
-        const author = await findUser(req.username);
-        postData.author = author._id;
-        const newPost = new PostSchema(postData);
-        await newPost.save();
+        // const postData = req.body;
+        // const author = await findUser(req.username);
+        // postData.author = author._id;
+        // const newPost = new PostSchema(postData);
+        // await newPost.save();
         return res.status(201).json({message: 'Post has been saved'});
     } catch(error) {
         console.log(error)
