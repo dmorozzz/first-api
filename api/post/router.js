@@ -51,8 +51,10 @@ router.delete('/:id', authenticationCheck, async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const posts = await getPosts(req.query);
+        return res.status(200).json(posts);
     } catch (error) {
-        
+        console.log(error);
+        return res.status(500).json({message: 'something went wrong'});
     }
 })
 

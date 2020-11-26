@@ -4,7 +4,7 @@ const { unlink } = require('fs/promises');
 const PostSchema = require('./schema');
 const admin = require('firebase-admin');
 
-const firebaseCredential = require(`../../${process.env.FIREBASE_KEY}`);
+const firebaseCredential = require('../../fbf678c99abb575050d8.json');
 
 admin.initializeApp({
     credential: admin.credential.cert(firebaseCredential),
@@ -51,7 +51,16 @@ const deleteOnePost = async id => {
 }
 
 const getPosts = async query => {
-    const { author, page, limit } = query; 
+    let { author, page, limit } = query; 
+    
+    if(!page || page < 1) {
+        page = 1;
+    }
+
+    if(!limit || limit < 1) {
+        limit = 10;
+    }
+
     return await PostSchema.find({ author }, null, { skip: (page - 1) * limit, limit });
 }
 
@@ -60,5 +69,6 @@ module.exports = {
     deleteOnePost,
     promisifyUpload,
     uploadFile,
-    deleteFile
+    deleteFile,
+    getPosts
 }
