@@ -1,9 +1,8 @@
 const multiparty = require('multiparty');
+const { unlink } = require('fs/promises');
 
 const PostSchema = require('./schema');
 const admin = require('firebase-admin');
-const { resolve } = require('path');
-const { rejects } = require('assert');
 
 const firebaseCredential = require(`../../${process.env.FIREBASE_KEY}`);
 
@@ -30,8 +29,10 @@ const promisifyUpload = req => new Promise((resolve, reject) => {
 })
 
 
+
 const uploadFile = async url => {
-    return bucket.upload(url);
+    const [file] = await bucket.upload(url, { public: true });
+    return file.metadata;
 }
 
 const getPostById = async id => {
@@ -42,6 +43,8 @@ const getPostById = async id => {
 
     return post;
 }
+
+const deleteFile = async url => unlink(url); 
 
 const deleteOnePost = async id => {
     return await PostSchema.findByIdAndDelete(id);
@@ -55,5 +58,7 @@ const getPosts = async query => {
 module.exports = {
     getPostById,
     deleteOnePost,
-    promisifyUpload
+    promisifyUpload,
+    uploadFile,
+    deleteFile
 }
