@@ -1,5 +1,39 @@
-const { query } = require('express');
+const multiparty = require('multiparty');
+const { unlink } = require('fs/promises');
+
 const PostSchema = require('./schema');
+const admin = require('firebase-admin');
+
+const firebaseCredential = require('../../fbf678c99abb575050d8.json');
+
+admin.initializeApp({
+    credential: admin.credential.cert(firebaseCredential),
+    databaseURL: "https://first-a1bdc.firebaseio.com"
+  });
+
+const bucket = admin.storage().bucket('gs://first-a1bdc.appspot.com/');
+
+const multipartyFormOptions = {
+    autoFiles: true,
+    uploadDir: __dirname + '/images',
+};
+
+const promisifyUpload = req => new Promise((resolve, reject) => {
+    const form = new multiparty.Form(multipartyFormOptions); 
+
+    form.parse(req, function(err, fields, files) {
+        if (err) return reject(err);
+
+        return resolve({fields, files});
+    });
+})
+
+
+
+const uploadFile = async url => {
+    const [file] = await bucket.upload(url, { public: true });
+    return file.metadata;
+}
 
 const getPostById = async id => {
     const post = await PostSchema.findById(id);
@@ -10,17 +44,31 @@ const getPostById = async id => {
     return post;
 }
 
+const deleteFile = async url => unlink(url); 
+
 const deleteOnePost = async id => {
     return await PostSchema.findByIdAndDelete(id);
 }
 
 const getPosts = async query => {
-    const { author, page, limit } = query; 
+    let { author, page, limit } = query; 
+    
+    if(!page || page < 1) {
+        page = 1;
+    }
+
+    if(!limit || limit < 1) {
+        limit = 10;
+    }
+
     return await PostSchema.find({ author }, null, { skip: (page - 1) * limit, limit });
 }
 
 module.exports = {
     getPostById,
-    deleteOnePost
-
+    deleteOnePost,
+    promisifyUpload,
+    uploadFile,
+    deleteFile,
+    getPosts
 }
