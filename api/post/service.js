@@ -8,10 +8,10 @@ const firebaseCredential = require('../../fbf678c99abb575050d8.json');
 
 admin.initializeApp({
     credential: admin.credential.cert(firebaseCredential),
-    databaseURL: "https://first-a1bdc.firebaseio.com"
+    databaseURL: process.env.STORAGE_URL
   });
 
-const bucket = admin.storage().bucket('gs://first-a1bdc.appspot.com/');
+const bucket = admin.storage().bucket(process.env.BUCKET_URL);
 
 const multipartyFormOptions = {
     autoFiles: true,

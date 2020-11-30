@@ -3,16 +3,14 @@ const router = express.Router();
 const userService = require('../service.js');
 const { promisify } = require('util');
 
-router.post('/registration', async (req, res) => {
+router.post('/registration', async (req, res, next) => {
     try {
         const userData = req.body;
         await userService.createUser(userData);
         req.session.username = userData.username;
         return res.status(201).json({status: 'OK', message: 'user has been created'});
     } catch (error) {
-        const errorMessage = new Error(error);
-        console.log(error);
-        return res.status(400).json({status: 'Bad request', message: errorMessage})
+        next(error);
     }
 });
 
