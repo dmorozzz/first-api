@@ -10,11 +10,11 @@ router.post('/registration', async (req, res, next) => {
         req.session.username = userData.username;
         return res.status(201).json({status: 'OK', message: 'user has been created'});
     } catch (error) {
-        next(error);
+       return next(error);
     }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next) => {
     try {
         const { username, password } = req.body;
         const user = await userService.findUser(username);
@@ -22,17 +22,16 @@ router.post('/login', async (req, res) => {
         req.session.username = username;
         return res.status(200).json({status: 'OK', data: username});
     } catch (error) {
-        console.log(error)
-        return res.status(401).json({ message: error });
+        return next(error)
     }
 })
 
-router.get('/logout', async (req, res) => {
+router.get('/logout', async (req, res, next) => {
     try {
         await promisify(req.session.destroy);
         return res.status(200).json({status:'ok', message: 'user is logout'});
     } catch (error) {
-        return res.status(500).json({message: error});
+        return next(error);
     }
 })
 

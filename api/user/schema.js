@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { OperationError } = require('../error/operation');
 
 const saltRound = process.env.SALT_WORK_FACTOR;
 
@@ -30,17 +31,18 @@ userSchema.pre('save', async function(next) {
         user.password = await bcrypt.hash(user.password, salt);
         return next();
     } catch (error) {
-        return next(error);
+        const operationError = new OperationError(500, error.message);
+        return next(operationError);
     }
     
 })
-
 
 userSchema.methods.comparePassword = async function(candidatePassword) {
     const isMatch = await  bcrypt.compare(candidatePassword, this.password)
 
     if(!isMatch) {
-        throw new Error('wrong password');
+        const operationError = new OperationError(400, 'password is wrong')
+        throw operationError;
     }
 };
 

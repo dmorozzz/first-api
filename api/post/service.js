@@ -36,12 +36,7 @@ const uploadFile = async url => {
 }
 
 const getPostById = async id => {
-    const post = await PostSchema.findById(id);
-    if(post == null) {
-        throw new Error('Post didnt find');
-    }
-
-    return post;
+    return await PostSchema.findById(id);
 }
 
 const deleteFile = async url => unlink(url); 
