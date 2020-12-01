@@ -1,16 +1,20 @@
 const UserSchema = require('./schema');
+const { OperationError } = require('../error/operation');
+
+const isUserExist = async username => {
+    const user =  await UserSchema.findOne({username});
+    return user ? true : false; 
+}
 
 const createUser = async userData => {
     const {username, password} = userData;
     
-    const user = await UserSchema.findOne({username});
-
-    if(user !== null) {
-        throw new Error('user is already exist');
+    if(isUserExist(username)) {
+        throw new OperationError(400, 'user is already exist');
     }
 
-
     const newUser = new UserSchema({username, password});
+    
     return await newUser.save();
 }
 
@@ -18,7 +22,7 @@ const findUser = async username => {
     const user = await UserSchema.findOne({username});
 
     if(!user) {
-        throw new Error('user not found');
+        throw new OperationError(400, 'user not found');
     }
 
     return user;
